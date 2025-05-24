@@ -14,8 +14,8 @@ def get_credentials():
     credential_path = os.path.join(".auth","credentials.json")
     store = Storage(credential_path)
     credentials = store.get()
-    if not credentials or credentials.invalid:
-        print("Credentials not found.")
+    if not credentials or credentials.invalid or getattr(credentials, 'access_token_expired', False):
+        print("Credentials not found or invalid.")
         return False
     else:
         print("Credentials fetched successfully.")
@@ -65,6 +65,7 @@ def test_get_credentials_valid_credentials(mock_storage_path):
     # Create a mock credentials object
     mock_credentials = MagicMock()
     mock_credentials.invalid = False
+    mock_credentials.access_token_expired = False
     
     # Use patch to simulate Storage().get() returning valid credentials
     with patch('oauth2client.file.Storage.get', return_value=mock_credentials):
