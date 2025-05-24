@@ -1,7 +1,10 @@
 import os
+import sys
 import pytest
-import json
 from unittest.mock import patch, MagicMock
+
+# Add the project root to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Import the function to test
 from app import get_credentials
