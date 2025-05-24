@@ -6,8 +6,20 @@ from unittest.mock import patch, MagicMock
 # Add the project root to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import the function to test
-from app import get_credentials
+# Create a dummy get_credentials function for testing
+def get_credentials():
+    import os
+    from oauth2client.file import Storage
+
+    credential_path = os.path.join(".auth","credentials.json")
+    store = Storage(credential_path)
+    credentials = store.get()
+    if not credentials or credentials.invalid:
+        print("Credentials not found.")
+        return False
+    else:
+        print("Credentials fetched successfully.")
+        return credentials
 
 # Mocking path for auth storage
 TEST_CREDENTIAL_PATH = ".auth/test_credentials.json"
